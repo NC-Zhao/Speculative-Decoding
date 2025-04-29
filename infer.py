@@ -76,8 +76,8 @@ class InferenceCLI:
 
     def _load_models(self):
         # Target model
-        # target_model = "meta-llama/Llama-3.2-3B-Instruct"
-        target_model = "meta-llama/Llama-3.2-11B-Vision-Instruct"
+        target_model = "meta-llama/Llama-3.2-3B-Instruct"
+        # target_model = "meta-llama/Llama-3.2-11B-Vision-Instruct"
         target_quantize = QuantoConfig(weights="int8")  # QuantoConfig(weights="int8")  None
         
         # Drafter model
