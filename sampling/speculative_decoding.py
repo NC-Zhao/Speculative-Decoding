@@ -102,7 +102,7 @@ def speculative_generate(
         if torch.isin(t, stop_tokens):
             if debug:
                 printing.end_token_found(0)
-            return input_ids[0, prompt_len:current_position].tolist(), 0
+            return input_ids[0, prompt_len:current_position].tolist(), 0, 0
         
         if debug:
             printing.initial_step(t, tokenizer)
@@ -157,7 +157,7 @@ def speculative_generate(
             stop_location = stop_locations[0, 1].item()
             if debug:
                 printing.end_token_found(stop_location)
-            return input_ids[0, prompt_len:current_position + stop_location + 1].tolist(), drafts_accepted / drafts_speculated
+            return input_ids[0, prompt_len:current_position + stop_location + 1].tolist(), drafts_accepted, drafts_speculated
 
         # adjust the distribution from Mp
         if n == corrected_gamma:
@@ -189,9 +189,9 @@ def speculative_generate(
         if torch.isin(x, stop_tokens):
             if debug:
                 printing.end_token_found(n)
-            return input_ids[0, prompt_len:current_position].tolist(), drafts_accepted / drafts_speculated
+            return input_ids[0, prompt_len:current_position].tolist(), drafts_accepted, drafts_speculated
     
-    return input_ids[0, prompt_len:].tolist(), drafts_accepted / drafts_speculated
+    return input_ids[0, prompt_len:].tolist(), drafts_accepted, drafts_speculated
 
 
 @torch.no_grad()
@@ -275,7 +275,7 @@ def speculative_generate_multi(
         if torch.isin(t, stop_tokens):
             if debug:
                 printing.end_token_found(0)
-            return input_ids[0, prompt_len:current_position].tolist(), 0
+            return input_ids[0, prompt_len:current_position].tolist(), 0, 0
         
         if debug:
             printing.initial_step(t, tokenizer)
@@ -349,7 +349,7 @@ def speculative_generate_multi(
             stop_location = stop_locations[0, 1].item()
             if debug:
                 printing.end_token_found(stop_location)
-            return input_ids[0, prompt_len:current_position + stop_location + 1].tolist(), drafts_accepted / drafts_speculated
+            return input_ids[0, prompt_len:current_position + stop_location + 1].tolist(), drafts_accepted, drafts_speculated
 
         # adjust the distribution from Mp
         if n == corrected_gamma:
@@ -381,6 +381,6 @@ def speculative_generate_multi(
         if torch.isin(x, stop_tokens):
             if debug:
                 printing.end_token_found(n)
-            return input_ids[0, prompt_len:current_position].tolist(), drafts_accepted / drafts_speculated
+            return input_ids[0, prompt_len:current_position].tolist(), drafts_accepted, drafts_speculated
     
-    return input_ids[0, prompt_len:total_len].tolist(), drafts_accepted / drafts_speculated
+    return input_ids[0, prompt_len:total_len].tolist(), drafts_accepted, drafts_speculated
